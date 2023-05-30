@@ -1,9 +1,10 @@
 pip
+# workflow
 pytest
 pylint
-pylint[spelling]
 isort
 black
+# required
 streamlit==1.22.0
 torch==2.0.1
 torchvision==0.15.2
