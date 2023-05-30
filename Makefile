@@ -4,8 +4,8 @@ test:
 		python -m pytest
 format:
 		isort --atomic .
-		black *.py
+		black .
 lint:
-		pylint --disable=R,C main.py
+		pylint --disable=R,C **/*.py
 
 all: install test format lint
