@@ -11,4 +11,5 @@ lint:
 		pip install -U pylint
 		pylint --disable=R,C **/*.py
 
+dev: format lint
 all: install test format lint
