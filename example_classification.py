@@ -1,13 +1,14 @@
-from typing import List
+from typing import Dict, List
 
 import plotly.express as px
-import streamlit as st
 import torch
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 
-labels_map = {
+from pytorch_dataloader_streamlit import run_dataloader_app
+
+labels_id_to_str = {
     0: "T-Shirt",
     1: "Trouser",
     2: "Pullover",
@@ -22,24 +23,10 @@ labels_map = {
 
 
 def main() -> None:
-    st.title("Pytorch Dataloader Viewer")
-
     dataloaders = get_dataloaders()
-
-    dataset_to_show = st.radio("Dataset", ["train", "test"])
-
-    n_images = len(dataloaders[dataset_to_show])
-    img_idx = st.slider("IMAGE", 0, n_images - 1)
-    img, label = dataloaders[dataset_to_show].dataset[img_idx]
-    img = img.squeeze()
-    img = img * 255
-    label_name = labels_map[int(label)]
-    st.write(f"Label: ({label}) {label_name}")
-    fig = px.imshow(img, aspect="equal")
-    st.plotly_chart(fig)
+    run_dataloader_app(dataloaders, labels_id_to_str=labels_id_to_str)
 
 
-@st.cache_resource()
 def get_dataloaders() -> List[DataLoader]:
     training_data = datasets.FashionMNIST(
         root="data", train=True, download=True, transform=ToTensor()
